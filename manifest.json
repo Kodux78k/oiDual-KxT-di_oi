@@ -1,0 +1,23 @@
+{
+  "name": "Dual.Infodose v7.9 · KOBLLUX VISIO",
+  "short_name": "Dual.Infodos",
+  "description": "",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#050811",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
