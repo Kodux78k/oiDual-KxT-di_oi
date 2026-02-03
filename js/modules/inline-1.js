@@ -273,7 +273,7 @@ if (typeof particlesJS === 'function') {
     },
     retina_detect:true
   });
-}
+},
     // --- VOZ ---
     setupVoiceSystem() {
         if (!('webkitSpeechRecognition' in window)) return;
