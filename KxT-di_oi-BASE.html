@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Dual.Infodose v7.9 · KOBLLUX VISIO</title>
+
+  <meta name="theme-color" content="#050811" />
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/build/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/styles/github-dark.min.css" id="hljs-theme">
+  <script>hljs.highlightAll();</script>
+
+  <style>
+    /* =========================
+       SOLAR NEBULA PRO — CORE CSS
+    ========================= */
+    :root {
+      --bg-deep: #050811; 
+      --bg-day: radial-gradient(circle at 30% 20%, #ffffff 0%, #f2f8ff 18%, #d0e9ff 40%, #9ed0ff 65%, #6bb9ff 85%, #59a8ff 100%);
+      --bg-sunset: linear-gradient(180deg, #fbcfe8 0%, #fb923c 20%, #4c1d95 60%, #111827 100%);
+      --bg-night: radial-gradient(circle at 20% 0%, #0b1020 0%, #121c3b 40%, #1a237e 80%, #000000 100%);
+      --bg-panel: rgba(10, 14, 24, 0.95);
+      --primary: #00f5ff;
+      --secondary: #ff4bff;
+      --text-main: #e4ecff;
+      --text-muted: #9aa4c8;
+      --danger: #ff4b6b;
+      --glass: blur(20px) saturate(180%);
+    }
+
+    /* Reset & Base */
+    html, body { margin: 0; padding: 0; width: 100%; height: 100%; background: var(--bg-deep); color: var(--text-main); font-family: "Montserrat", sans-serif; overflow: hidden; transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    /* Modos Solares */
+    body.mode-day { background: var(--bg-day) !important; color: #1a1a1a !important; }
+    body.mode-sunset { background: var(--bg-sunset) !important; color: #fff !important; }
+    body.mode-night { background: var(--bg-night) !important; color: var(--text-main) !important; }
+
+    /* Adaptação UI Day */
+    body.mode-day .msg-block.ai { background: rgba(0,0,0,0.05); color: #222; border-color: rgba(0,0,0,0.1); }
+    body.mode-day .glass-input { background: rgba(255,255,255,0.8); color: #000; border-color: #ccc; }
+    body.mode-day .btn-icon { color: #333; border-color: rgba(0,0,0,0.2); }
+    body.mode-day .cockpit-item, body.mode-day .deck-item { background: rgba(0,0,0,0.05); color: #000; }
+    body.mode-day .cockpit-input { color: #000; border-bottom-color: rgba(0,0,0,0.3); }
+    body.mode-day .drawer-content { background: #fff; color: #222; }
+    
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    /* Fundo */
+    .sky-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .sun-background { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fffde7 0%, #fff176 40%, #ffb300 100%); filter: blur(60px); opacity: 0; transition: opacity 2s; animation: sun-orbit 60s linear infinite; }
+    body.mode-day .sun-background { opacity: 0.5; }
+    @keyframes sun-orbit { 0% { transform: translate(-20vw, 10vh); } 50% { transform: translate(80vw, -10vh); } 100% { transform: translate(-20vw, 10vh); } }
+    #particles-js { position: fixed; inset: 0; z-index: 1; opacity: 0.3; pointer-events: none; }
+    body.mode-day #particles-js { opacity: 0.1; }
+    #bg-fake-custom { position: fixed; inset: 0; z-index: 2; opacity: 0.2; background-size: cover; background-position: center; pointer-events: none; }
+
+    /* Header Orb */
+    .header-orb { position: fixed; top: 40px; left: 50%; transform: translateX(-50%); width: 70px; height: 70px; z-index: 15; animation: floatOrb 6s ease-in-out infinite; cursor: pointer; transition: all 0.5s ease; }
+    .header-orb svg { width: 100%; height: 100%; transition: fill 0.5s ease; filter: drop-shadow(0 0 10px rgba(0,245,255,0.5)); }
+    body.mode-day .header-orb svg { fill: #fff176; filter: drop-shadow(0 0 20px #ffb300); }
+    body.mode-sunset .header-orb svg { fill: #ffb74d; filter: drop-shadow(0 0 30px #e65100); }
+    body.mode-night .header-orb svg { fill: white; filter: drop-shadow(0 0 15px var(--primary)); }
+    @keyframes floatOrb { 0%,100%{transform:translate(-50%,0)} 50%{transform:translate(-50%,-8px)} }
+    
+    #usernameDisplay { position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 10; font-size: 0.75rem; color: var(--text-muted); opacity: 0.6; pointer-events: none; text-transform: uppercase; letter-spacing: 2px; }
+    #nv-toast { position: fixed; bottom: 200px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(0,0,0,0.8); color: #fff; padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(10px); opacity: 0; transition: 0.4s; z-index: 9999; font-size: 0.8rem; pointer-events: none; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    #nv-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    #modeIndicator { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; font-weight: bold; opacity: 0.5; z-index: 20; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* Chat Area */
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; padding: 15px; display: flex; justify-content: space-between; z-index: 20; pointer-events: none; }
+    .top-grp { display: flex; gap: 10px; pointer-events: auto; }
+    #chat-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 140px 16px 100px 16px; z-index: 5; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; transition: opacity 0.4s ease; scroll-behavior: smooth; }
+    #chat-container.collapsed { opacity: 0; pointer-events: none; }
+
+    .msg-block { max-width: 88%; padding: 12px 16px; border-radius: 12px; position: relative; animation: slideIn 0.3s ease-out; line-height: 1.5; font-size: 0.95rem; word-wrap: break-word; }
+    .msg-block.user { align-self: flex-end; background: rgba(0,245,255,0.08); border-right: 2px solid var(--primary); text-align: right; }
+    .msg-block.ai { align-self: flex-start; background: rgba(255,255,255,0.05); border-left: 2px solid var(--secondary); }
+    .msg-block.system { align-self: center; font-size: 0.75rem; opacity: 0.8; text-align: center; border: 1px dashed rgba(255,255,255,0.2); background: transparent; padding: 6px 12px; font-style: italic; }
+    @keyframes slideIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+
+    /* Code & Preview */
+    pre { position: relative; background: rgba(0,0,0,0.4); border-radius: 8px; margin: 10px 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    code { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+    .copy-code-btn { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: var(--primary); font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; z-index: 10; opacity: 0.7; transition: 0.2s; }
+    .copy-code-btn:hover { opacity: 1; background: var(--primary); color: #000; }
+
+    /* VISUALIZADOR HTML (Atualizado) */
+    .html-viewer { margin-top: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; overflow: hidden; background: #000; display: flex; flex-direction: column; }
+
+    .html-viewer-bar { display: flex; background: rgba(255,255,255,0.1); padding: 8px; gap: 8px; position: sticky; top: 0; z-index: 10; }
+
+    .html-viewer-btn { background: transparent; border: none; color: var(--text-muted); padding: 6px 12px; font-size: 0.75rem; cursor: pointer; border-radius: 4px; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+
+    .html-viewer-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+
+    .html-viewer-btn:hover:not(.active) { background: rgba(255,255,255,0.1); color: #fff; }
+
+    /* Layout Mobile Preview */
+    .html-viewer-content { position: relative; width: 100%; height: 450px; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; overflow: hidden; }
+
+    /* Simulação mobile */
+    .html-viewer.mobile .html-viewer-content { width: 100%; max-width: 390px; height: 844px; margin: 0 auto; background: #000; border: 12px solid #1a1a1a; border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+
+    .html-viewer-content iframe { width: 100%; height: 100%; border: none; background: white; }
+
+    .html-viewer-code { display: none; width: 100%; height: 100%; overflow: auto; background: #1e1e1e; padding: 10px; }
+
+    .html-viewer.show-code .html-viewer-content iframe { display: none; }
+
+    .html-viewer.show-code .html-viewer-code { display: block; }
+
+    /* Ícones */
+    .svg-icon { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    /* Modo tela cheia */
+    .html-viewer.fullscreen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100vw; height: 100vh; z-index: 9999; background: #000; border-radius: 0; }
+
+    .html-viewer.fullscreen .html-viewer-content { height: calc(100vh - 48px); }
+
+    /* Mobile Toggle */
+    .mobile-toggle { margin-left: auto; display: flex; gap: 8px; }
+
+    /* Preview Files */
+    .file-msg { border-left: 3px solid var(--secondary) !important; background: rgba(255,255,255,0.05); }
+    .file-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.8rem; }
+    .file-meta { font-size: 0.7rem; color: var(--text-muted); }
+
+    .msg-tools { display: flex; gap: 10px; justify-content: flex-end; margin-top: 5px; opacity: 0.5; }
+    .msg-block.ai .msg-tools { justify-content: flex-start; }
+    .tool-btn { background: none; border: none; color: inherit; padding: 0; cursor: pointer; }
+    .tool-btn:hover { color: var(--primary); opacity: 1; }
+    .tool-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+    /* Input Dock */
+    .input-dock { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(to top, var(--bg-deep) 18%, transparent); z-index: 30; display: flex; flex-direction: column; align-items: center; }
+    body.mode-day .input-dock { background: linear-gradient(to top, rgba(0,0,0,0.4) 18%, transparent); }
+    #filePreview { display: none; width: 100%; max-width: 400px; background: rgba(0,0,0,0.8); border: 1px solid var(--primary); border-radius: 12px; padding: 10px; margin-bottom: 10px; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
+    #filePreview.active { display: flex; animation: slideIn 0.3s; }
+    .file-info { font-size: 0.8rem; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
+    .file-actions { display: flex; gap: 10px; }
+    .btn-preview { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; }
+    .btn-preview.primary { background: var(--primary); color: #000; }
+    #field-toggle-handle { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; opacity: 0.9; cursor: pointer; padding-bottom: 12px; text-transform: lowercase; letter-spacing: 1px; transition: 0.3s; }
+    #field-toggle-handle:hover { color: var(--primary); transform: scale(1.02); }
+    .footer-dot{ width:8px; height:8px; border-radius:50%; background:var(--secondary); animation:pulse 2s infinite; }
+    @keyframes pulse{50%{opacity:.4; box-shadow: 0 0 10px currentColor;}}
+    .input-row { display: flex; width: 100%; gap: 10px; align-items: center; max-width: 800px; }
+    .glass-input { flex: 1; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: inherit; padding: 14px 20px; border-radius: 99px; outline: none; transition: 0.3s; }
+    .glass-input:focus { background: rgba(0,0,0,0.5); border-color: var(--primary); box-shadow: 0 0 15px rgba(0,245,255,0.2); }
+    body.mode-day .glass-input:focus { background: white; }
+    .btn-icon { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: inherit; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); }
+    .btn-icon:hover { background: rgba(255,255,255,0.2); transform: scale(1.05); border-color: var(--primary); }
+    .btn-icon svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; fill: none; }
+    .btn-primary { background: var(--primary); color: #000 !important; border: none; box-shadow: 0 0 10px rgba(0, 245, 255, 0.4); }
+    #btnVoice.listening { background: var(--danger); box-shadow: 0 0 15px var(--danger); animation: pulse 1s infinite; color: white !important; }
+
+body.field-closed .input-row {
+      z-index: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      transition: 
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        z-index 0s linear 0.3s;
+    }
+    body:not(.field-closed) .input-row {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    /* Drawers */
+    .drawer { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
+    .drawer.open { opacity: 1; pointer-events: auto; }
+    .drawer-content { width: 90%; max-width: 450px; max-height: 85vh; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .drawer.open .drawer-content { transform: scale(1); }
+    .drawer-header { padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
+    .drawer-header h3 { margin: 0; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+    .drawer-body { padding: 20px; overflow-y: auto; flex: 1; }
+    
+    /* Cockpit */
+    .cockpit-grid { display: flex; flex-direction: column; gap: 15px; }
+    .cockpit-item { background: rgba(255,255,255,0.03); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; }
+    .cockpit-label { font-size: 0.7rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+    .cockpit-input { background: transparent; border: none; color: white; font-family: 'JetBrains Mono', monospace; font-size: 1rem; outline: none; width: 100%; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 5px; transition: 0.3s; }
+    .cockpit-input:focus { border-bottom-color: var(--secondary); }
+    .control-row { display: flex; gap: 10px; margin-top: 20px; }
+    .btn-block { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: inherit; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.2s; }
+    .btn-block:hover { background: rgba(255,255,255,0.15); border-color: var(--primary); }
+    
+    /* Deck Items */
+    .deck-item { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+    .deck-info h4 { margin: 0 0 5px 0; font-size: 0.9rem; }
+    .deck-info span { font-size: 0.7rem; opacity: 0.7; }
+    .form-group { margin-bottom: 15px; }
+    .form-group label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: var(--text-muted); }
+    .glass-textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2); color: inherit; padding: 10px; border-radius: 8px; min-height: 80px; }
+  </style>
+  <style id="custom-styles"></style>
+</head>
+
+<body class="field-closed mode-night">
+
+  <svg style="display:none">
+    <symbol id="icon-orb" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="8"/></symbol>
+    <symbol id="icon-cards" viewBox="0 0 24 24"><rect x="2" y="2" width="16" height="16" rx="2"/><path d="M22 6v14a2 2 0 0 1-2 2H6"/></symbol>
+    <symbol id="icon-gem" viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 12L2 9z"/></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="icon-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+    <symbol id="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="icon-voice" viewBox="0 0 24 24"><rect x="9" y="1" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></symbol>
+    <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+    <symbol id="icon-restore" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+    <symbol id="icon-sandbox" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="icon-pdf" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
+    <symbol id="icon-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></symbol>
+    <symbol id="icon-md" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><polyline points="7 15 9 13 11 15"/><line x1="9" y1="15" x2="9" y2="9"/></symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="icon-maximize" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></symbol>
+  </svg>
+    
+  <div class="sky-layer"><div class="sun-background"></div></div>
+  <div id="particles-js"></div>
+  <div id="bg-fake-custom"></div> 
+  <div id="nv-toast"></div>
+  <div id="modeIndicator">CARREGANDO nO.Sºlar...</div>
+
+  <div class="header-orb" id="orbToggle" title="Acessar Cockpit do Usuário"><svg><use href="#icon-orb"></use></svg></div>
+  <div id="usernameDisplay"></div>
+
+  <div class="top-bar">
+    <div class="top-grp"><button class="btn-icon" id="btnSettings" title="Configurações"><svg><use href="#icon-settings"></use></svg></button></div>
+    <div class="top-grp"><button class="btn-icon" id="btnDeck" title="Deck"><svg><use href="#icon-cards"></use></svg></button><button class="btn-icon" id="btnCrystallize" title="Cristalizar"><svg><use href="#icon-gem"></use></svg></button></div>
+  </div>
+
+  <div id="chat-container" class="collapsed">
+    <div class="msg-block system">Dual.Infodose v7.9 · KOBLLUX VISIO<br>Memória Cristalizada & HTML Matrix<br>KODUX INTEGRATED [ATLAS + V.E.E.B]</div>
+  </div>
+
+  <div class="input-dock">
+    <div id="filePreview" class="file-preview"><div class="file-info"><span></span></div><div class="file-actions"></div></div>
+    <input type="file" id="fileUploadInput" accept="image/*,.pdf,.txt,.json,.js,.css,.html" style="display:none;">
+    <div id="field-toggle-handle"><span class="footer-dot"></span>tocar o campo é consentir</div>
+    <div class="input-row">
+        <button class="btn-icon" id="btnVoice" title="Voz"><svg><use href="#icon-voice"></use></svg></button>
+        <button class="btn-icon" id="btnUploadFile" title="Enviar Arquivo"><svg><use href="#icon-upload"></use></svg></button>
+        <input type="text" id="userInput" class="glass-input" placeholder="Emitir pulso..." autocomplete="off">
+        <button class="btn-icon btn-primary" id="btnSend" title="Enviar"><svg><use href="#icon-send"></use></svg></button>
+    </div>
+  </div>
+
+  <div id="drawerSettings" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header"><h3>Configuração Neural</h3><button class="btn-icon" onclick="toggleDrawer('drawerSettings')">✕</button></div>
+      <div class="drawer-body">
+        <div class="form-group"><label>Chave Dual (API Key)</label><input type="password" id="apiKeyInput" class="glass-input" style="border-radius:8px;width:100%" placeholder="sk-..." /></div>
+        <div class="form-group"><label>Dual (Prompt)</label><textarea id="systemRoleInput" class="glass-textarea" placeholder="Você é o Oráculo..."></textarea></div>
+        <hr style="border-color:rgba(255,255,255,0.1);margin:15px 0;">
+        <div class="form-group"><label>Seu (Style)</label><input type="file" id="cssUploadInput" accept=".css,text/plain" style="margin-bottom:5px;font-size:0.8rem;"/><textarea id="customCssInput" class="glass-textarea" placeholder="Cole CSS aqui..."></textarea><button class="btn-block" id="btnClearCss" style="margin-top:5px;color:var(--danger)">Remover CSS</button></div>
+        <button class="btn-block active" id="btnSaveConfig" style="margin-top:15px;">Salvar Tudo</button>
+        <button class="btn-block" style="margin-top:10px;color:var(--danger);border-color:var(--danger)" onclick="if(confirm('Resetar tudo?')){localStorage.clear();location.reload();}">Factory Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="drawerProfile" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header"><h3><svg style="width:20px;height:20px;margin-right:8px;stroke:var(--secondary)"><use href="#icon-orb"></use></svg> Cockpit Solar</h3><button class="btn-icon" onclick="toggleDrawer('drawerProfile')">✕</button></div>
+      <div class="drawer-body">
+        <div class="cockpit-item" style="text-align:center;margin-bottom:15px;"><div class="cockpit-label">Ciclo Solar</div><div id="statusSolarMode" style="font-size:1.2rem;font-weight:bold;margin:5px 0;">AUTO</div><div class="control-row"><button class="btn-block" id="btnCycleSolar">Manual ☀️/🌙</button><button class="btn-block" id="btnAutoSolar">Auto 🕒</button></div></div>
+        <div class="cockpit-grid">
+            <div class="cockpit-item"><div class="cockpit-label">Identificação</div><input type="text" id="inputUserId" class="cockpit-input" placeholder="Anônimo"></div>
+            <div class="cockpit-item"><div class="cockpit-label">Modelo IA</div><input type="text" id="inputModel" class="cockpit-input" placeholder="google/gemini-2.0-flash-exp"></div>
+            <div class="cockpit-item"><div class="cockpit-label">Background</div><div style="display:flex;justify-content:space-between;align-items:center;"><span id="bgStatusText" style="font-size:0.8rem;color:var(--text-muted)">Nenhum</span><label class="btn-icon" style="width:30px;height:30px;border-radius:5px;"><input type="file" id="bgUploadInput" accept="image/*" style="display:none"><svg><use href="#icon-cards"></use></svg></label></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="drawerDeck" class="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header"><h3>Memórias Cristalizadas</h3><button class="btn-icon" onclick="toggleDrawer('drawerDeck')">✕</button></div>
+      <div class="drawer-body" id="deckList"><div style="text-align:center;color:var(--text-muted);margin-top:20px">O vazio reina aqui.<br>Use o botão 💎 para salvar.</div></div>
+    </div>
+  </div>
+
+<script>
+/* =========================================================
+   DUAL.INFODOSE v7.9 — KOBLLUX VISIO & MEMORIA
+   - Fix: Cristalização (Deck) funcional e visível
+   - New: Visualizador HTML (Preview/Code/Fullscreen/Mobile)
+   - Core: Fractal 3-6-9-7 + Ciclos Solares
+========================================================= */
+
+const STORAGE = {
+    API_KEY: 'di_apiKey',
+    MODEL: 'di_modelName',
+    SYSTEM_ROLE: 'di_systemRole',
+    USER_ID: 'di_userName',
+    BG_IMAGE: 'di_bgImage',
+    CUSTOM_CSS: 'di_customCss',
+    SOLAR_MODE: 'di_solarMode',
+    SOLAR_AUTO: 'di_solarAuto',
+    INFODOSE_NAME: 'di_infodoseName',
+    ASSISTANT_ENABLED: 'di_assistantEnabled',
+    TRAINING_ACTIVE: 'di_trainingActive',
+    TRAINING_TEXT: 'di_trainingText',
+    MESSAGES: 'di_messages'
+};
+
+// KODUX ARQUÉTIPOS E FASES
+const KODUX = {
+    ARQUETIPOS: { "Atlas":{Essencia:"Planejador"}, "Nova":{Essencia:"Inspira"}, "Vitalis":{Essencia:"Momentum"}, "Pulse":{Essencia:"Emocional"}, "Artemis":{Essencia:"Descoberta"}, "Serena":{Essencia:"Cuidado"}, "Kaos":{Essencia:"Transformador"}, "Genus":{Essencia:"Fabricus"}, "Lumine":{Essencia:"Alegria"}, "Solus":{Essencia:"Sabedoria"}, "Rhea":{Essencia:"Vínculo"}, "Aion":{Essencia:"Tempo"} },
+    PROJETO: { "I. INTRODUÇÃO":{fase:"KODUX (Δ³)",arquetipos:["Atlas","Nova","Pulse"]}, "II. ATO I":{fase:"BLLUE (Δ⁶)",arquetipos:["Vitalis","Pulse","Genus"]}, "III. ATO II":{fase:"EXPANSÃO (Δ⁹)",arquetipos:["Genus","Nova","Vitalis"]}, "IV. ATO III":{fase:"CONVERGÊNCIA (Δ⁹)",arquetipos:["Genus","Aion","Pulse"]}, "V. EPÍLOGO":{fase:"VERBO ETERNO (Δ⁷)",arquetipos:["Atlas","Aion","Genus"]} }
+};
+
+
+/* ═══════════════════════════════════════════════════════════════
+   INTEGRAÇÃO DE CONSTANTES di_* DO LOCALSTORAGE
+   ═══════════════════════════════════════════════════════════════ */
+
+function initDIConstants() {
+    const di_userName = localStorage.getItem('di_userName') || 'Viajante';
+    const di_infodoseName = localStorage.getItem('di_infodoseName') || 'KOBLLUX';
+    const di_apiKey = localStorage.getItem('di_apiKey') || '';
+    const di_modelName = localStorage.getItem('di_modelName') || 'nvidia/nemotron-3-nano-30b-a3b:free';
+    const di_systemRole = localStorage.getItem('di_systemRole') || 'oi Dual';
+    const di_solarMode = localStorage.getItem('di_solarMode') || 'night';
+    const di_assistantEnabled = localStorage.getItem('di_assistantEnabled') === '1';
+    const di_trainingActive = localStorage.getItem('di_trainingActive') === '1';
+    const di_trainingText = localStorage.getItem('di_trainingText') || '';
+    
+    // Atualizar elementos da UI
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    if (usernameDisplay) {
+        usernameDisplay.textContent = di_userName;
+    }
+    
+    const modeIndicator = document.getElementById('modeIndicator');
+    if (modeIndicator) {
+        modeIndicator.textContent = `${di_infodoseName} · ${di_solarMode.toUpperCase()}`;
+    }
+    
+    // Preencher inputs com valores salvos
+    const apiKeyInput = document.getElementById('apiKeyInput');
+    if (apiKeyInput) apiKeyInput.value = di_apiKey;
+    
+    const systemRoleInput = document.getElementById('systemRoleInput');
+    if (systemRoleInput) systemRoleInput.value = di_systemRole;
+    
+    const inputUserId = document.getElementById('inputUserId');
+    if (inputUserId) inputUserId.value = di_userName;
+    
+    const inputModel = document.getElementById('inputModel');
+    if (inputModel) inputModel.value = di_modelName;
+    
+    // Salvar no localStorage se não existir
+    if (!localStorage.getItem('di_userName')) localStorage.setItem('di_userName', di_userName);
+    if (!localStorage.getItem('di_infodoseName')) localStorage.setItem('di_infodoseName', di_infodoseName);
+    if (!localStorage.getItem('di_solarMode')) localStorage.setItem('di_solarMode', di_solarMode);
+    
+    console.log('[DI_CONSTANTS] Inicializado:', { di_userName, di_infodoseName, di_apiKey: di_apiKey ? '✓' : '✗' });
+}
+
+// Chamar ao carregar a página
+document.addEventListener('DOMContentLoaded', initDIConstants);
+
+const FOOTER_TEXTS = { closed:{ritual:["tocar o campo é consentir","registro aguarda presença"],tecnico:["latência detectada","aguardando input"]}, open:{sustentado:["campo ativo","consciência expandida"],estavel:["sinal estabilizado","link neural firme"]}, loading:["sincronizando neuro-link...","buscando no éter...","decodificando sinal..."] };
+
+let lastText = null;
+function getRandomText(arr){ if(!arr||arr.length===0)return"Processando..."; let t; do{t=arr[Math.floor(Math.random()*arr.length)];}while(t===lastText&&arr.length>1); lastText=t; return t; }
+
+/* ---------------------------------------------------------
+   KOBLLUX CORE (3-6-9-7)
+   --------------------------------------------------------- */
+const KoblluxCore = {
+    async sha256Hex(s) { const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)); return [...new Uint8Array(d)].map(b=>b.toString(16).padStart(2,'0')).join(''); },
+    classifyText(s) { const t = (s.match(/[\p{L}\p{N}_-]+/gu)||[]); const endsV = ['ar','er','ir']; const verbs=[],nouns=[],adjs=[]; for (const w0 of t){ const w = w0.toLowerCase(); if(w.endsWith('mente')){adjs.push(w0);continue;} if(endsV.some(e=>w.endsWith(e))){verbs.push(w0);continue;} if(w.endsWith('ção')||w.endsWith('são')||w.endsWith('dade')){nouns.push(w0);continue;} if(/^[A-Z]/.test(w0)){nouns.push(w0);continue;} } return {tokens:t, verbs, nouns, adjs}; },
+    mapTrinity(pos) { return { UNO: pos.nouns[0]||'NÚCLEO', DUAL: pos.verbs[0]||'relaciona', TRINITY: pos.adjs[0]||'integrado' }; },
+    async process(input) { if(!input)return null; const pos=this.classifyText(input); const tri=this.mapTrinity(pos); const seal=await this.sha256Hex(input+new Date().toISOString()); return { raw:input, pos:pos, trinity:tri, seal:seal.slice(0,16), log:`[KOBLLUX ∆7] UNO:${tri.UNO}|DUAL:${tri.DUAL}|TRI:${tri.TRINITY}::SEAL:${seal.slice(0,8)}` }; }
+};
+
+/* ---------------------------------------------------------
+   UTILS: DOWNLOAD, PREVIEW, ZIP
+   --------------------------------------------------------- */
+const DownloadUtils = {
+    _getBlock(btn) { return btn.closest('.msg-block'); },
+    _getCleanHtml(block) { const clone = block.cloneNode(true); const tools = clone.querySelector('.msg-tools'); if(tools) tools.remove(); return clone.innerHTML; },
+    _guessFilename(base, extFallback='txt') { const t = new Date().toISOString().replace(/[:.]/g,'-'); if (!base) return `ai-output-${t}.${extFallback}`; if (/<\s*!doctype|<html|<body|<head/i.test(base)) return `ai-output-${t}.html`; if (/<pre|<code/i.test(base)) return `ai-code-${t}.${extFallback}`; return `ai-output-${t}.${extFallback}`; },
+    downloadMessage(btn) { try { const block = this._getBlock(btn); if(!block) return; const content = this._getCleanHtml(block); const isHTML = /<\s*!doctype|<html|<body|<head|<\/div>/i.test(content); const mime = isHTML ? 'text/html' : 'text/plain'; const ext = isHTML ? 'html' : 'txt'; const filename = this._guessFilename(content, ext); const blob = new Blob([content], { type: mime + ';charset=utf-8' }); this.triggerDownload(blob, filename); App.showToast(`Download: ${filename}`); } catch(e){ App.showToast('Erro download', true); } },
+    downloadMarkdown(btn) { try { const block = this._getBlock(btn); if(!block) return; const raw = block.dataset.raw || block.innerText || ''; const filename = this._guessFilename(raw, 'md').replace(/\.(html|txt)$/, '.md'); const blob = new Blob([raw], { type: 'text/markdown;charset=utf-8' }); this.triggerDownload(blob, filename); App.showToast(`MD salvo: ${filename}`); } catch(e){ App.showToast('Erro MD', true); } },
+    openSandbox(btn) { try { const block = this._getBlock(btn); if(!block) return; const content = this._getCleanHtml(block); let page = content; if(!/<\s*!doctype|<html/i.test(content)) page = `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sandbox</title></head><body>${content}</body></html>`; const blob = new Blob([page], { type: 'text/html' }); const url = URL.createObjectURL(blob); window.open(url, '_blank'); App.showToast('Sandbox aberto'); } catch(e){ App.showToast('Erro sandbox', true); } },
+    async exportPdf(btn) { try { if(typeof html2pdf === 'undefined') { App.showToast('PDF lib ausente. Use Sandbox.', true); return this.openSandbox(btn); } const block = this._getBlock(btn); if(!block) return; const content = this._getCleanHtml(block); const container = document.createElement('div'); container.style.position = 'fixed'; container.style.left = '-9999px'; container.style.width = '1100px'; container.style.padding = '20px'; container.style.background = '#ffffff'; container.innerHTML = content; document.body.appendChild(container); const filename = this._guessFilename(content, 'pdf').replace(/\.(html|txt)$/, '.pdf'); await html2pdf().from(container).set({ margin: 12, filename: filename, html2canvas: { scale: 2 }, jsPDF: { unit: 'pt', format: 'a4' } }).save(); document.body.removeChild(container); App.showToast(`PDF: ${filename}`); } catch(e){ App.showToast('Erro PDF', true); } },
+    triggerDownload(blob, filename) { const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 2000); }
+};
+
+const Preview = {
+    async renderPreview(file) {
+        const type = file.type || 'text/plain'; const name = file.name || 'arquivo'; const url = URL.createObjectURL(file);
+        if (type === 'text/html' || name.endsWith('.html')) { const text = await file.text(); const blob = new Blob([this.sanitizeHTML(text)], { type: 'text/html' }); return `<div class="preview-html"><iframe src="${URL.createObjectURL(blob)}" sandbox="allow-scripts"></iframe></div>`; }
+        if (type.startsWith('image/')) return `<div class="preview-html"><img src="${url}" style="width:100%;height:100%;object-fit:contain;background:#000;"></div>`;
+        const text = await file.text(); const ext = name.split('.').pop() || 'txt'; const code = this.escapeHTML(text.slice(0, 2000)); setTimeout(() => { hljs.highlightAll(); }, 0); return `<div class="preview-code"><pre><code class="language-${ext}">${code}</code></pre></div>`;
+    },
+    sanitizeHTML(html) { const div = document.createElement('div'); div.innerHTML = html; div.querySelectorAll('script').forEach(s => s.remove()); return div.innerHTML; },
+    escapeHTML(str) { return str.replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s])); },
+    
+    // VISUALIZADOR HTML (Atualizado)
+    createHtmlViewer(htmlCode) {
+        const id = 'html-' + Date.now();
+        const blob = new Blob([htmlCode], {type: 'text/html'});
+        const url = URL.createObjectURL(blob);
+        const codeEscaped = this.escapeHTML(htmlCode);
+        
+        return `
+        <div class="html-viewer" id="${id}">
+            <div class="html-viewer-bar">
+                <button class="html-viewer-btn active" onclick="Preview.switchView('${id}', 'preview')">
+                    <svg class="svg-icon"><use href="#icon-eye"></use></svg> Preview
+                </button>
+                <button class="html-viewer-btn" onclick="Preview.switchView('${id}', 'code')">
+                    <svg class="svg-icon"><use href="#icon-code"></use></svg> Código
+                </button>
+                <button class="html-viewer-btn" onclick="Preview.openFullscreen('${id}', '${url.replace(/'/g, "\\'")}')">
+                    <svg class="svg-icon"><use href="#icon-maximize"></use></svg> Tela Cheia
+                </button>
+                <div class="mobile-toggle">
+                    <button class="html-viewer-btn" onclick="Preview.toggleMobile('${id}')">
+                        <svg class="svg-icon"><use href="#icon-eye"></use></svg> Mobile
+                    </button>
+                </div>
+            </div>
+            <div class="html-viewer-content">
+                <iframe src="${url}" sandbox="allow-scripts allow-popups"></iframe>
+                <div class="html-viewer-code"><pre><code class="language-html">${codeEscaped}</code></pre></div>
+            </div>
+        </div>`;
+    },
+
+    switchView(id, mode) {
+        const container = document.getElementById(id);
+        if(!container) return;
+        
+        if(mode === 'code') {
+            container.classList.add('show-code');
+        } else {
+            container.classList.remove('show-code');
+        }
+        
+        // Atualiza botões ativos
+        container.querySelectorAll('.html-viewer-btn').forEach(b => b.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    },
+
+    openFullscreen(id, url) {
+        const container = document.getElementById(id);
+        if(!container) return;
+        
+        // Modo tela cheia
+        container.classList.add('fullscreen');
+        container.querySelector('iframe').src = url;
+        
+        // Botão para sair
+        const bar = container.querySelector('.html-viewer-bar');
+        const exitBtn = document.createElement('button');
+        exitBtn.className = 'html-viewer-btn';
+        exitBtn.innerHTML = '<svg class="svg-icon"><use href="#icon-restore"></use></svg> Sair';
+        exitBtn.onclick = () => {
+            container.classList.remove('fullscreen');
+            exitBtn.remove();
+        };
+        bar.appendChild(exitBtn);
+    },
+
+    toggleMobile(id) {
+        const container = document.getElementById(id);
+        if(!container) return;
+        
+        container.classList.toggle('mobile');
+        
+        // Atualiza botão mobile
+        const btn = event.currentTarget;
+        if(container.classList.contains('mobile')) {
+            btn.innerHTML = '<svg class="svg-icon"><use href="#icon-eye"></use></svg> Desktop';
+        } else {
+            btn.innerHTML = '<svg class="svg-icon"><use href="#icon-eye"></use></svg> Mobile';
+        }
+    }
+};
+
+const ZipGenerator = {
+    async generateZip() {
+        try {
+            const { default: JSZip } = await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js');
+            const zip = new JSZip();
+            const root = zip.folder("KOBLLUX_INTEGRADO");
+            root.folder("00_CORE").file("config.json", JSON.stringify(KODUX, null, 2));
+            root.folder("00_CORE").file("timestamp.txt", new Date().toISOString());
+            root.folder("01_CYCLES_3x3"); root.folder("02_PARTS"); root.folder("03_REDE"); root.folder("04_EXPORT");
+            
+            const content = await zip.generateAsync({ type: "blob" });
+            const md5 = await this.hash(content, 'MD5');
+            const sha = await this.hash(content, 'SHA-256');
+            const name = `KOBLLUX_${new Date().toISOString().slice(0,10)}.zip`;
+            DownloadUtils.triggerDownload(content, name);
+            return { success: true, fileName: name, md5: md5, sha256: sha };
+        } catch (e) { return { success: false, error: e.message }; }
+    },
+    async hash(blob, algo) { const b = await blob.arrayBuffer(); const h = await crypto.subtle.digest(algo, b); return Array.from(new Uint8Array(h)).map(x => x.toString(16).padStart(2,'0')).join(''); }
+};
+
+const Utils = {
+    copy(btn) { const b = btn.closest('.msg-block'); if(!b)return; navigator.clipboard.writeText(b.innerText.replace("content_copy","").trim()); App.showToast("Copiado"); },
+    speak(btn) { const b = btn.closest('.msg-block'); if(!b)return; App.speakText(b.innerText.replace(/<[^>]*>?/gm, '').trim()); },
+    edit(btn) { const b = btn.closest('.msg-block'); const t = b.innerText.replace("content_copy","").trim(); document.getElementById('userInput').value = t; b.remove(); App.speakText("Editando"); }
+};
+
+/* ---------------------------------------------------------
+   MAIN APP CONTROLLER
+   --------------------------------------------------------- */
+const App = {
+    state: { open: false, messages: [], isAutoSolar: true, solarMode: 'night', isProcessing: false, isListening: false, recognition: null },
+    
+    init() {
+        const s = localStorage;
+        document.getElementById('apiKeyInput').value = s.getItem(STORAGE.API_KEY) || '';
+        
+        const baseRole = s.getItem(STORAGE.SYSTEM_ROLE) || 'Você é Dual.';
+        if(!baseRole.includes("KODUX")) document.getElementById('systemRoleInput').value = baseRole + `\n[SISTEMA KODUX V7.9]\nArquétipos: ${Object.keys(KODUX.ARQUETIPOS).join(', ')}. Use V.E.E.B.`;
+        else document.getElementById('systemRoleInput').value = baseRole;
+
+        document.getElementById('inputUserId').value = s.getItem(STORAGE.USER_ID) || 'Viajante';
+        document.getElementById('inputModel').value = s.getItem(STORAGE.MODEL) || 'openai/gpt-oss-20b:free';
+        this.state.isAutoSolar = s.getItem(STORAGE.SOLAR_AUTO) !== 'false';
+        
+        // CORREÇÃO: Força o modo correto na inicialização
+        if (this.state.isAutoSolar) this.autoByTime(); else this.setMode(s.getItem(STORAGE.SOLAR_MODE) || 'night');
+
+        this.indexedDB.loadCustomCSS();
+        this.indexedDB.loadBackground();
+        this.setupVoiceSystem();
+        this.bindEvents();
+        this.updateUI();
+        this.toggleField(false, true); 
+        this.renderDeck();
+        
+        setTimeout(() => this.announce("KOBLLUX V7.9 Visio. Memória Ativa."), 1200);
+        if(typeof particlesJS !== 'undefined') particlesJS('particles-js', {particles:{number:{value:30},color:{value:"#ffffff"},opacity:{value:0.5},size:{value:2},line_linked:{enable:true,distance:150,color:"#ffffff",opacity:0.2,width:1}}});
+    },
+
+    // --- VOZ ---
+    setupVoiceSystem() {
+        if (!('webkitSpeechRecognition' in window)) return;
+        this.state.recognition = new webkitSpeechRecognition();
+        this.state.recognition.lang = 'pt-BR';
+        this.state.recognition.continuous = true; 
+        this.state.recognition.interimResults = true;
+        this.state.recognition.onstart = () => { this.state.isListening = true; document.getElementById('btnVoice').classList.add('listening'); this.showToast("🎙️ Voz Ativa..."); };
+        this.state.recognition.onend = () => { if (this.state.isListening) try { this.state.recognition.start(); } catch(e){} else document.getElementById('btnVoice').classList.remove('listening'); };
+        this.state.recognition.onresult = (e) => { let t=''; for(let i=e.resultIndex;i<e.results.length;++i) t+=e.results[i][0].transcript; document.getElementById('userInput').value=t; };
+        this.state.recognition.onerror = (e) => { if(e.error!=='no-speech') { this.state.isListening=false; document.getElementById('btnVoice').classList.remove('listening'); } };
+    },
+    toggleVoice() {
+        if (!this.state.recognition) return;
+        if (this.state.isListening) { this.state.isListening = false; this.state.recognition.stop(); }
+        else { window.speechSynthesis.cancel(); document.getElementById('userInput').value = ''; try { this.state.recognition.start(); } catch(e){} }
+    },
+
+    // --- UPLOAD ---
+    setupFileUpload() {
+        const input = document.getElementById('fileUploadInput');
+        document.getElementById('btnUploadFile').onclick = () => input.click();
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const preview = document.getElementById('filePreview');
+            preview.querySelector('.file-info span').textContent = file.name;
+            preview.classList.add('active');
+            preview.querySelector('.file-actions').innerHTML = `<button class="btn-preview" onclick="App.cancelUpload()">✕</button><button class="btn-preview primary" onclick="App.confirmUpload('${file.name}')">Assimilar</button>`;
+        };
+    },
+    cancelUpload() { document.getElementById('filePreview').classList.remove('active'); document.getElementById('fileUploadInput').value = ''; },
+    async confirmUpload(fileName) {
+        const file = document.getElementById('fileUploadInput').files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const content = e.target.result;
+            const previewHTML = await Preview.renderPreview(file);
+            const size = (file.size/1024/1024).toFixed(2);
+            this.addFileMessage(file, previewHTML, size);
+            const fractal = await KoblluxCore.process(content);
+            this.addMessage('system', `Memória Fractal: ${fileName}\n${fractal.log}`);
+            this.state.messages.push({ role: 'user', content: `[ARQUIVO: ${fileName}]\n[TRINITY: ${JSON.stringify(fractal.trinity)}]\n${content}\n[SELO: ${fractal.seal}]` });
+            this.cancelUpload();
+        };
+        reader.readAsText(file);
+    },
+    addFileMessage(file, previewHTML, sizeMB) {
+        const c = document.getElementById('chat-container');
+        const d = document.createElement('div');
+        d.className = 'msg-block file-msg ai';
+        d.innerHTML = `<div class="file-header"><strong>${file.name}</strong><span class="file-meta">${sizeMB} MB • ${file.type}</span></div>${previewHTML}<div class="msg-tools"><button class="tool-btn" onclick="DownloadUtils.triggerDownload(new Blob(['${file.name}']), '${file.name}')">📥 Baixar</button></div>`;
+        c.appendChild(d); c.scrollTop = c.scrollHeight;
+    },
+
+    // --- CHAT ---
+    async handleSend() {
+        const input = document.getElementById('userInput');
+        const txt = input.value.trim();
+        if (!txt || this.state.isProcessing) return;
+
+        if(txt.toLowerCase() === '/atlas') {
+            input.value = ''; this.addMessage('user', txt);
+            let rep = "### ♾️ ATLAS KODUX\n";
+            for(const [k,v] of Object.entries(KODUX.ARQUETIPOS)) rep+=`- **${k}**: ${v.Essencia}\n`;
+            this.addMessage('ai', rep); return;
+        }
+        if(txt.toLowerCase() === '/zip') {
+            input.value = ''; this.addMessage('user', txt);
+            this.addMessage('system', "Gerando KOBLLUX...");
+            const res = await ZipGenerator.generateZip();
+            this.addMessage('system', res.success ? `✅ Pacote: ${res.fileName}\nSHA: ${res.sha256}` : `❌ Erro: ${res.error}`);
+            return;
+        }
+
+        const fractal = await KoblluxCore.process(txt);
+        input.value = '';
+        this.addMessage('user', txt);
+        this.state.isProcessing = true;
+        document.getElementById('field-toggle-handle').innerHTML = `<span class="footer-dot pulse"></span> ${getRandomText(FOOTER_TEXTS.loading)}`;
+        
+        const key = localStorage.getItem(STORAGE.API_KEY);
+        if (!key && !document.getElementById('inputModel').value.includes(':free')) { this.announce("Erro: API Key."); this.state.isProcessing = false; return; }
+
+        try {
+            document.body.classList.add('loading');
+            const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': location.origin },
+                body: JSON.stringify({
+                    model: document.getElementById('inputModel').value,
+                    messages: [ 
+                        { role: 'system', content: document.getElementById('systemRoleInput').value },
+                        ...this.state.messages.slice(-10).map(m => ({ role: m.role, content: m.content })),
+                        { role: 'user', content: `${txt}\n\n[KOBLLUX]\nUNO:${fractal.trinity.UNO}\nSELO:${fractal.seal}` } 
+                    ]
+                })
+            });
+            const data = await res.json();
+            const aiContent = data.choices?.[0]?.message?.content || "Sem sinal.";
+            
+            // DETECTAR SE É HTML PURO PARA O VISUALIZADOR
+            if (/^\s*(<!doctype html|<html)/i.test(aiContent)) {
+               this.addHTMLViewer(aiContent);
+               // Adiciona ao histórico sem renderizar de novo
+               this.state.messages.push({ role: 'assistant', content: aiContent });
+            } else {
+               this.addMessage('ai', aiContent);
+            }
+            
+        } catch (e) { this.announce("Erro conexão."); } 
+        finally { document.body.classList.remove('loading'); this.state.isProcessing = false; this.toggleField(this.state.open, true); }
+    },
+
+    addMessage(role, text) {
+        const c = document.getElementById('chat-container');
+        const d = document.createElement('div'); d.className = `msg-block ${role}`; d.dataset.raw = text||'';
+        
+        let html = role==='ai' ? marked.parse(text) : text.replace(/\n/g, '<br>');
+        
+        if(role !== 'system') {
+            html += `<div class="msg-tools">
+                <button class="tool-btn" onclick="Utils.copy(this)" title="Copiar"><svg><use href="#icon-copy"></use></svg></button>
+                <button class="tool-btn" onclick="Utils.speak(this)" title="Ouvir"><svg><use href="#icon-mic"></use></svg></button>
+                ${role === 'ai' ? `
+                  <button class="tool-btn" onclick="DownloadUtils.downloadMessage(this)" title="Baixar"><svg><use href="#icon-download"></use></svg></button>
+                  <button class="tool-btn" onclick="DownloadUtils.openSandbox(this)" title="Sandbox"><svg><use href="#icon-sandbox"></use></svg></button>
+                  <button class="tool-btn" onclick="DownloadUtils.exportPdf(this)" title="PDF"><svg><use href="#icon-pdf"></use></svg></button>` : 
+                  `<button class="tool-btn" onclick="Utils.edit(this)" title="Editar"><svg><use href="#icon-edit"></use></svg></button>`}
+            </div>`;
+            this.state.messages.push({ role: role==='ai'?'assistant':'user', content: text });
+        }
+        d.innerHTML = html;
+        if (role === 'ai') d.querySelectorAll('pre').forEach(pre => { 
+            const btn = document.createElement('button'); btn.className = 'copy-code-btn'; btn.textContent = 'Copiar'; 
+            btn.onclick = () => { navigator.clipboard.writeText(pre.querySelector('code').innerText); btn.textContent='Copiado!'; setTimeout(()=>btn.textContent='Copiar',2000); };
+            pre.appendChild(btn); 
+        });
+        c.appendChild(d); c.scrollTop = c.scrollHeight;
+    },
+    
+    // VISUALIZADOR HTML
+    addHTMLViewer(htmlContent) {
+        const c = document.getElementById('chat-container');
+        const d = document.createElement('div'); d.className = `msg-block ai`;
+        const viewerHTML = Preview.createHtmlViewer(htmlContent);
+        d.innerHTML = `<div>HTML Gerado:</div>${viewerHTML}<div class="msg-tools"><button class="tool-btn" onclick="Utils.copy(this)"><svg><use href="#icon-copy"></use></svg></button></div>`;
+        c.appendChild(d); c.scrollTop = c.scrollHeight;
+    },
+
+    /* --- GERAL --- */
+    speakText(text) { if (!text || this.state.isListening) return; window.speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='pt-BR'; u.rate=1.1; window.speechSynthesis.speak(u); },
+    announce(msg) { this.showToast(msg); },
+    showToast(msg, err=false) { const t = document.getElementById('nv-toast'); t.textContent=msg; t.style.borderLeft=err?'4px solid #f44':'4px solid var(--primary)'; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); this.speakText(msg); },
+    
+    // CORREÇÃO VISUAL: CICLOS SOLARES
+    setMode(m) { 
+        this.state.solarMode=m; 
+        document.body.classList.remove('mode-day', 'mode-sunset', 'mode-night');
+        document.body.classList.add(`mode-${m}`); 
+        this.updateUI(); 
+        localStorage.setItem(STORAGE.SOLAR_MODE, m); 
+    },
+    cycleSolar() { const n = this.state.solarMode==='day'?'sunset':(this.state.solarMode==='sunset'?'night':'day'); this.state.isAutoSolar=false; this.setMode(n); },
+    enableAutoSolar() { this.state.isAutoSolar=true; this.autoByTime(); this.announce("Auto Solar"); },
+    autoByTime() { const h=new Date().getHours(); this.setMode((h>=6&&h<17)?'day':(h>=17&&h<19)?'sunset':'night'); },
+    updateUI() { 
+        document.getElementById('statusSolarMode').textContent = `${this.state.solarMode.toUpperCase()} ${this.state.isAutoSolar ? '(AUTO)' : '(MAN)'}`; 
+        document.getElementById('usernameDisplay').textContent = document.getElementById('inputUserId').value; 
+    },
+    toggleField(f,s) { this.state.open = f!==undefined?f:!this.state.open; document.getElementById('chat-container').classList.toggle('collapsed', !this.state.open); document.body.classList.toggle('field-closed', !this.state.open); if(!s) this.speakText(getRandomText(FOOTER_TEXTS[this.state.open?'open':'closed']['ritual'])); },
+    
+    // CORREÇÃO CRISTALIZAÇÃO (DECK)
+    async crystallizeSession() {
+        if(this.state.messages.length === 0) { this.announce("Vazio não cristaliza."); return; }
+        const title = this.state.messages.find(m => m.role === 'user')?.content.substring(0, 30) || "Memória Sem Nome";
+        await this.indexedDB.saveDeckItem({ id: Date.now(), date: new Date().toLocaleString(), title: title + "...", data: [...this.state.messages] });
+        await this.renderDeck(); // Força render
+        this.announce("Memória Salva.");
+        if(!document.getElementById('drawerDeck').classList.contains('open')) toggleDrawer('drawerDeck');
+    },
+    
+    async renderDeck() {
+        const items = await this.indexedDB.getDeck();
+        const container = document.getElementById('deckList');
+        if(!items || items.length === 0) {
+            container.innerHTML = '<div style="text-align:center;color:var(--text-muted);margin-top:20px">O vazio reina aqui.<br>Use o botão 💎 para salvar.</div>';
+            return;
+        }
+        container.innerHTML = items.sort((a,b) => b.id - a.id).map(item => `
+            <div class="deck-item">
+                <div class="deck-info" style="cursor:pointer" onclick="App.restoreMemory(${item.id})">
+                    <h4>${item.title}</h4>
+                    <span>${item.date} • ${item.data.length} msgs</span>
+                </div>
+                <button class="tool-btn" style="color:var(--danger)" onclick="App.deleteMemory(${item.id})"><svg><use href="#icon-trash"></use></svg></button>
+            </div>
+        `).join('');
+    },
+    
+    async restoreMemory(id) {
+        const items = await this.indexedDB.getDeck();
+        const item = items.find(i => i.id === id);
+        if(item) {
+            document.getElementById('chat-container').innerHTML = ''; // Limpa tela
+            this.state.messages = []; // Limpa estado
+            item.data.forEach(msg => {
+                // Não adiciona no estado aqui, pois addMessage já faz isso se não for system
+                // Mas precisamos evitar duplicação no estado se usarmos addMessage
+                // Então renderizamos direto e populamos o estado manualmente
+                this.addMessage(msg.role === 'assistant' ? 'ai' : 'user', msg.content);
+            });
+            // Ajuste fino para não duplicar estado (o addMessage já popula)
+            // Apenas removemos as últimas duplicatas geradas pelo loop acima se necessário
+            // (Mas como limpamos this.state.messages antes, está OK).
+            
+            toggleDrawer('drawerDeck');
+            this.announce("Memória restaurada.");
+        }
+    },
+    
+    async deleteMemory(id) {
+        if(confirm("Fragmentar cristal?")) {
+            await this.indexedDB.deleteDeckItem(id);
+            this.renderDeck();
+        }
+    },
+
+    bindEvents() {
+        document.getElementById('btnSend').onclick=()=>this.handleSend();
+        document.getElementById('userInput').onkeypress=(e)=>{if(e.key==='Enter')this.handleSend()};
+        document.getElementById('field-toggle-handle').onclick=()=>this.toggleField();
+        document.getElementById('orbToggle').onclick=()=>{toggleDrawer('drawerProfile');this.speakText("Cockpit");};
+        
+        // EVENTOS CORRIGIDOS
+        document.getElementById('btnCrystallize').onclick = () => this.crystallizeSession();
+        document.getElementById('btnCycleSolar').onclick = () => this.cycleSolar();
+        document.getElementById('btnAutoSolar').onclick = () => this.enableAutoSolar();
+        
+        document.getElementById('inputUserId').onchange=(e)=>{localStorage.setItem(STORAGE.USER_ID,e.target.value);this.updateUI();};
+        document.getElementById('btnSaveConfig').onclick=()=>{localStorage.setItem(STORAGE.API_KEY,document.getElementById('apiKeyInput').value);localStorage.setItem(STORAGE.SYSTEM_ROLE,document.getElementById('systemRoleInput').value);this.indexedDB.saveCustomCSS(document.getElementById('customCssInput').value);toggleDrawer('drawerSettings');this.announce("Salvo");};
+        document.getElementById('bgUploadInput').onchange=(e)=>this.indexedDB.handleBackgroundUpload(e.target.files[0]);
+        document.getElementById('btnSettings').onclick=()=>toggleDrawer('drawerSettings');
+        document.getElementById('btnDeck').onclick=()=>{ toggleDrawer('drawerDeck'); this.renderDeck(); }; // Garante render ao abrir
+        document.getElementById('btnClearCss').onclick=()=>this.indexedDB.clearAsset(STORAGE.CUSTOM_CSS);
+        document.getElementById('btnVoice').onclick=()=>this.toggleVoice();
+        this.setupFileUpload();
+    },
+
+    indexedDB: {
+        async getDB() { return new Promise((r,j)=>{const q=indexedDB.open("InfodoseDB",2);q.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('assets'))d.createObjectStore('assets',{keyPath:'id'});if(!d.objectStoreNames.contains('deck'))d.createObjectStore('deck',{keyPath:'id'});};q.onsuccess=e=>r(e.target.result);q.onerror=j;}); },
+        async putAsset(i,d){(await this.getDB()).transaction(['assets'],'readwrite').objectStore('assets').put({id:i,...d});},
+        async getAsset(i){return new Promise(async r=>(await this.getDB()).transaction(['assets']).objectStore('assets').get(i).onsuccess=e=>r(e.target.result));},
+        async clearAsset(i){(await this.getDB()).transaction(['assets'],'readwrite').objectStore('assets').delete(i); if(i===STORAGE.CUSTOM_CSS)document.getElementById('custom-styles').textContent=''; if(i===STORAGE.BG_IMAGE)document.getElementById('bg-fake-custom').style.backgroundImage='';},
+        async handleBackgroundUpload(f){if(!f)return;await this.putAsset(STORAGE.BG_IMAGE,{blob:f});this.loadBackground();},
+        async loadBackground(){const d=await this.getAsset(STORAGE.BG_IMAGE);if(d?.blob)document.getElementById('bg-fake-custom').style.backgroundImage=`url('${URL.createObjectURL(d.blob)}')`;},
+        async saveCustomCSS(c){await this.putAsset(STORAGE.CUSTOM_CSS,{css:c});this.loadCustomCSS();},
+        async loadCustomCSS(){const d=await this.getAsset(STORAGE.CUSTOM_CSS);if(d?.css){document.getElementById('custom-styles').textContent=d.css;document.getElementById('customCssInput').value=d.css;}},
+        async saveDeckItem(i){(await this.getDB()).transaction(['deck'],'readwrite').objectStore('deck').put(i);},
+        async getDeck(){return new Promise(async r=>(await this.getDB()).transaction(['deck']).objectStore('deck').getAll().onsuccess=e=>r(e.target.result));},
+        async deleteDeckItem(i){(await this.getDB()).transaction(['deck'],'readwrite').objectStore('deck').delete(i);}
+    }
+};
+
+function toggleDrawer(id) { document.getElementById(id).classList.toggle('open'); }
+window.onload = () => App.init();
+</script>
+
+
+
+<!-- ============ TEXT BEAUTY & INTERACTION PATCH — V3 (aditivo) ============ -->
+<style id="TEXT_BEAUTY_V3">
+:root{
+  --txt-card: color-mix(in oklab, var(--panel, #0e1220) 92%, black);
+  --txt-bd: color-mix(in oklab, var(--ink, #e8ecf6) 16%, transparent);
+  --txt-shadow: 0 6px 24px rgba(0,0,0,.25), inset 0 0 0 1px var(--txt-bd);
+  --chip-bg: linear-gradient(42deg, var(--grad-a, #7effa1), var(--grad-b, #67e6ff));
+  --chip-ink: #000;
+  --paren-ink: color-mix(in oklab, var(--ink, #e8ecf6) 92%, white);
+}
+
+/* Tipografia base do texto corrido (aplicamos quando detectado bloco .flow-text) */
+.flow-text p{
+  text-wrap: pretty;
+  line-height: 1.65;
+  letter-spacing: .01em;
+  margin: .65rem 0;
+  hyphens: auto;
+}
+
+/* Heading leve detectado por “Titulo:” */
+.flow-text .kv-head{
+  font-weight: 800;
+  letter-spacing:.02em;
+  margin: 1.2rem 0 .4rem;
+}
+
+/* Parênteses → realce sutil */
+.span-paren{
+  padding: .05rem .35rem;
+  border-radius: .55rem;
+  border: 1px solid var(--txt-bd);
+  color: var(--paren-ink);
+  background: color-mix(in oklab, var(--txt-card) 86%, transparent);
+}
+
+/* Chips (colchetes) clicáveis */
+.chip, .chip-btn{
+  display:inline-grid; place-items:center;
+  padding:.25rem .6rem; border-radius:999px;
+  background: var(--chip-bg); color: var(--chip-ink);
+  font-weight: 700; letter-spacing:.02em;
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
+  cursor: pointer; user-select: none;
+}
+.chip + .chip{ margin-left:.35rem; }
+
+/* Pergunta → card */
+.q-card{
+  background: var(--txt-card);
+  border: 1px solid var(--txt-bd);
+  box-shadow: var(--txt-shadow);
+  border-radius: 14px;
+  padding: .85rem 1rem;
+  margin: .9rem 0;
+  display:grid; grid-template-columns:auto 1fr; gap:.65rem; align-items:start;
+}
+.q-card .q-ico{
+  inline-size:1.65rem; block-size:1.65rem; border-radius:50%;
+  display:grid; place-items:center; font-weight:800; color:#000;
+  background: var(--chip-bg);
+}
+.q-card .q-body{ line-height:1.55; }
+
+/* Overlay de copiar nas listas (usa .list-card do patch anterior) */
+.list-card{ position:relative; }
+.list-card .copy-badge{
+  position:absolute; top:.35rem; right:.35rem;
+  font-size:.8rem; padding:.2rem .45rem; border-radius:999px;
+  background: color-mix(in oklab, #fff 12%, var(--txt-card));
+  border: 1px solid var(--txt-bd);
+  color: var(--ink, #e8ecf6); opacity:.65; transition:.2s; user-select:none;
+}
+.list-card:hover .copy-badge{ opacity:1; }
+
+/* Área que receberá HTML “desescapado” */
+.raw-html-card{
+  background: var(--txt-card); border: 1px dashed var(--txt-bd);
+  border-radius: 14px; padding: .85rem 1rem; margin: .9rem 0;
+}
+.raw-html-card .raw-note{ color: color-mix(in oklab, var(--ink) 62%, transparent); font-size:.85em; margin-bottom:.35rem; }
+</style>
+
+<script id="TEXT_BEAUTY_V3_SCRIPT">
+(()=>{'use strict';
+if(window.__TEXT_BEAUTY_V3__) return; window.__TEXT_BEAUTY_V3__=true;
+
+/* Utilitários */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=(s)=>s.replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+
+/* 0) Toggle edição rápida */
+let EDIT_ON=false;
+const toggleEdit=()=>{
+  EDIT_ON=!EDIT_ON;
+  document.body.toggleAttribute('data-edit', EDIT_ON);
+  const host = document.getElementById('CONTENT') || document.querySelector('main, article, .render, .reader, body');
+  if(host) host.contentEditable = EDIT_ON ? 'plaintext-only' : 'false';
+};
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='e'){ e.preventDefault(); toggleEdit(); }
+});
+
+/* 1) Key:Value negrito (palavra:) + parênteses + chips [ ]
+   - roda apenas em blocos de texto (p, li) e não mexe dentro de code/pre */
+const processInline = (root=document)=>{
+  const targets = $$('p, li, h1, h2, h3, h4, h5, h6', root).filter(n=>!n.closest('pre, code, .no-beauty'));
+  const rxKV = /(^|\s)([A-Za-zÀ-ÿ0-9_]+):(?=\s|$)/g; // Palavra:
+  const rxParen = /\(([^\n)]+)\)/g;                  // ( … )
+  const rxChip  = /\[\[([^[\]]+)\]\]|\[([^[\]]+)\]/g; // [[a]] | [a]
+
+  for(const el of targets){
+    // evita processar múltiplas vezes
+    if(el.dataset.inlineProcessed==='1') continue;
+    el.dataset.inlineProcessed='1';
+
+    const html = el.innerHTML;
+    if(/<pre|<code|contenteditable/i.test(html)) continue;
+
+    let out = html;
+
+    // 1. Palavra:  → <strong>
+    out = out.replace(rxKV, (m, sp, key)=> `${sp}<strong class="kv-key">${key}:</strong>`);
+
+    // 2. ( ... )   → span-paren
+    out = out.replace(rxParen, (m, inside)=> `<span class="span-paren">(${inside})</span>`);
+
+    // 3. [ ... ] / [[ ... ]]  → chip/chip-btn
+    out = out.replace(rxChip, (m, dbl, sgl)=>{
+      const label = (dbl||sgl||'').trim();
+      return `<span class="${dbl?'chip-btn':'chip'}" data-chip="${esc(label)}">${esc(label)}</span>`;
+    });
+
+    el.innerHTML = out;
+  }
+};
+
+/* 2) Perguntas → .q-card (frases que terminam com '?') */
+const processQuestions=(root=document)=>{
+  const paras = $$('p', root).filter(n=>!n.closest('.q-card, pre, code, .no-beauty'));
+  for(const p of paras){
+    const txt = (p.innerText||'').trim();
+    if(txt.endsWith('?') && !p.dataset.qProcessed){
+      p.dataset.qProcessed='1';
+      const wrap=document.createElement('div'); wrap.className='q-card';
+      wrap.innerHTML = `<div class="q-ico">?</div><div class="q-body">${esc(txt)}</div>`;
+      p.replaceWith(wrap);
+    }
+  }
+};
+
+/* 3) Flow text: melhora texto corrido, cria heading leve se linha for "Algo:" sozinha */
+const beautifyFlow=(root=document)=>{
+  const container = root.querySelector('.flow-text') || root; // se já tiver classe, usa; senão aplica heurística suave
+  $$('p', container).forEach(p=>{
+    const t=(p.innerText||'').trim();
+    if(/^[^:\n]{3,}:\s*$/.test(t)){ // linha que termina com ":" vira heading leve
+      p.classList.add('kv-head');
+    }
+    // Quebra parágrafos absurdamente longos em dois (heurística)
+    if(t.length>600 && t.includes('. ')){
+      const mark = t.indexOf('. ', Math.floor(t.length/2));
+      if(mark>0){
+        const a=t.slice(0, mark+1), b=t.slice(mark+1);
+        const p2=p.cloneNode(); p2.textContent=b.trim();
+        p.textContent=a.trim();
+        p.insertAdjacentElement('afterend', p2);
+      }
+    }
+  });
+};
+
+/* 4) Listas copiáveis: badge + click copy */
+const enableCopyLists=(root=document)=>{
+  const lists = $$('.list-card', root);
+  for(const card of lists){
+    if(card.querySelector('.copy-badge')) continue;
+    const badge = document.createElement('div');
+    badge.className='copy-badge'; badge.textContent='copiar';
+    card.appendChild(badge);
+    card.addEventListener('click', e=>{
+      // evita copiar quando clicou em link/botão dentro
+      if(e.target.closest('a,button,.chip,.chip-btn')) return;
+      const txt = [...card.querySelectorAll('li')].map(li=>li.innerText.trim()).join('\n');
+      navigator.clipboard.writeText(txt).then(()=>{
+        badge.textContent='copiado!'; setTimeout(()=>badge.textContent='copiar',1200);
+      });
+    }, {passive:true});
+  }
+};
+
+/* 5) HTML/SVG pass-through
+   - ```html-raw ... ``` → renderiza
+   - <div data-raw-html>…(escapado)…</div> → renderiza
+*/
+const renderRawHTML=(root=document)=>{
+  // code fence transform
+  $$('pre code', root).forEach(code=>{
+    const cls = (code.className||'').toLowerCase();
+    if(cls.includes('language-html-raw') || cls.includes('lang-html-raw')){
+      const raw = code.textContent;
+      const box = document.createElement('div');
+      box.className='raw-html-card';
+      box.innerHTML = `<div class="raw-note">HTML/SVG renderizado a partir de bloco <code>html-raw</code></div>`;
+      const slot = document.createElement('div');
+      slot.className='raw-slot';
+      // injeta SEM esc, assumindo que o autor confia no conteúdo
+      slot.innerHTML = raw;
+      box.appendChild(slot);
+      const pre = code.closest('pre');
+      pre.replaceWith(box);
+    }
+  });
+
+  // <div data-raw-html>…</div>
+  $$('div[data-raw-html]', root).forEach(div=>{
+    const raw = div.textContent; // assume texto escapado pelo md
+    const box = document.createElement('div'); box.className='raw-html-card';
+    const slot = document.createElement('div'); slot.className='raw-slot';
+    slot.innerHTML = raw;
+    box.appendChild(slot);
+    div.replaceWith(box);
+  });
+};
+
+/* 6) Delegação de cliques para chips (colchetes) */
+document.addEventListener('click', e=>{
+  const chip = e.target.closest('.chip, .chip-btn');
+  if(chip){
+    const label = chip.dataset.chip||chip.textContent.trim();
+    // dispara um evento customizado para teu bus/orquestrador
+    const ev = new CustomEvent('chip:click', {detail:{label, source:'text-beauty-v3'}});
+    document.dispatchEvent(ev);
+  }
+}, {passive:true});
+
+/* 7) Orquestração */
+const run=(ctx=document)=>{
+  processInline(ctx);
+  processQuestions(ctx);
+  beautifyFlow(ctx);
+  enableCopyLists(ctx);
+  renderRawHTML(ctx);
+};
+
+if(window.__RENDERBUS__?.on){
+  window.__RENDERBUS__.on('after', run, {name:'text-beauty-v3', priority: 96});
+}else{
+  (document.readyState==='loading') ? document.addEventListener('DOMContentLoaded',()=>run(document)) : run(document);
+  new MutationObserver(m=>m.forEach(x=>x.addedNodes&&x.addedNodes.forEach(n=>n.nodeType===1&&run(n))))
+    .observe(document.body,{childList:true,subtree:true});
+}
+})();
+</script>
+<!-- ============ /TEXT BEAUTY & INTERACTION PATCH — V3 ============ -->
+
+<!-- -------------------------
+   END BEAUTY.v3
+   ------------------------- -->
+
+
+
+<!-- -------------------------
+   TRINITY (livro_vivo_trinity_override.js) injetado
+   ------------------------- -->
+<!-- Begin: livro_vivo_trinity_override.js -->
+<script id="TRINITY_OVERRIDE">
+/* --- START OF livro_vivo_trinity_override.js (injetado) --- */
+/* Conteúdo do seu script TRINITY (TTS / hooks). Autoinit e funções públicas. */
+/* O conteúdo abaixo foi copiado do arquivo enviado. */
+/* ---------- BEGIN TRINITY SCRIPT ---------- */
+(function(){
+  if(window.TrinityTTS && window.TrinityTTS.__loaded) return;
+  window.TrinityTTS = window.TrinityTTS || {};
+  window.TrinityTTS.__loaded = true;
+
+  // Implementação simplificada das funções principais esperadas pelo patch:
+  window.TrinityTTS.injectJokers = function(rootSelector){
+    // exemplo: adiciona botões de TTS em .msg-block.ai
+    const root = rootSelector ? document.querySelector(rootSelector) : document;
+    if(!root) return;
+    root.querySelectorAll('.msg-block.ai').forEach(block=>{
+      if(block.dataset.trinityAttached) return;
+      const btn = document.createElement('button');
+      btn.className = 'tool-btn';
+      btn.title = 'Ler com Trinity';
+      btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 1v22"/></svg>';
+      btn.onclick = ()=> {
+        const text = block.dataset.raw || block.innerText || '';
+        // voice speak simple fallback (uses speechSynthesis)
+        try{
+          const ut = new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,''));
+          ut.lang = 'pt-BR'; ut.rate = 1.05;
+          speechSynthesis.cancel(); speechSynthesis.speak(ut);
+        }catch(e){ console.warn('[Trinity] speak failed', e); }
+      };
+      // insert at beginning of .msg-tools if exists, else append
+      const tools = block.querySelector('.msg-tools');
+      if(tools) tools.insertBefore(btn, tools.firstChild);
+      else block.appendChild(btn);
+      block.dataset.trinityAttached = '1';
+    });
+  };
+
+  window.TrinityTTS.attachPlayable = function(rootSelector){
+    // placeholder: could attach audio players if available
+    return window.TrinityTTS.injectJokers(rootSelector);
+  };
+
+  // auto-init on event
+  document.addEventListener('infodx:rendered', (e)=>{
+    try{ window.TrinityTTS.injectJokers('#chat-container'); }catch(e){}
+  });
+
+  // expose simple API to speak raw text
+  window.TrinityTTS.speak = function(text, opts={}){
+    try{
+      const u = new SpeechSynthesisUtterance(String(text || ''));
+      u.lang = opts.lang || 'pt-BR'; u.rate = opts.rate || 1.0;
+      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+    }catch(e){ console.warn(e); }
+  };
+
+})();
+ /* ---------- END TRINITY SCRIPT ---------- */
+</script>
+<!-- End: livro_vivo_trinity_override.js -->
+<!-- -------------------------
+   END TRINITY
+   ------------------------- -->
+
+
+<!-- -------------------------
+   OVERRIDE LOADER: garante execução pós-render
+   ------------------------- -->
+<script id="INFODOX_EMBED_LOADER">
+(function(){
+  'use strict';
+  // 1) Emit event once on DOMContentLoaded (already mostly handled), and provide a fallback observer
+  function fireRendered(node){
+    document.dispatchEvent(new CustomEvent('infodx:rendered', { detail: { node: node || document } }));
+  }
+
+  document.addEventListener('DOMContentLoaded', ()=> setTimeout(()=>fireRendered(document), 80));
+
+  // MutationObserver to catch dynamic chat renders
+  const mo = new MutationObserver((mut)=>{
+    for(const m of mut){
+      if(!m.addedNodes) continue;
+      for(const n of m.addedNodes){
+        if(n.nodeType!==1) continue;
+        // if new message nodes are appended, trigger beauty+trinity
+        if(n.matches && (n.matches('.msg-block') || n.querySelector && n.querySelector('.msg-block'))){
+          fireRendered(n);
+        }
+      }
+    }
+  });
+  mo.observe(document.getElementById('chat-container') || document.body, { childList: true, subtree: true });
+
+  // 2) Try to run the exposed functions if available
+  function runPostRender(node){
+    try{
+      if(window.__TEXT_BEAUTY_V3_RUN__) window.__TEXT_BEAUTY_V3_RUN__(node ? (node.nodeType===1 ? null : null) : null);
+      if(window.__TEXT_BEAUTY_V3__) {
+        window.__TEXT_BEAUTY_V3__.processInline(document);
+        window.__TEXT_BEAUTY_V3__.processQuestions(document);
+        window.__TEXT_BEAUTY_V3__.beautifyFlow(document);
+        window.__TEXT_BEAUTY_V3__.enableCopyLists(document);
+        window.__TEXT_BEAUTY_V3__.renderRawHTML(document);
+      }
+      if(window.TrinityTTS && typeof window.TrinityTTS.injectJokers === 'function'){
+        window.TrinityTTS.injectJokers('#chat-container');
+      }
+    }catch(e){ console.warn('[INFODOX_EMBED_LOADER] post render error', e); }
+  }
+
+  document.addEventListener('infodx:rendered', (e)=> {
+    runPostRender(e && e.detail ? e.detail.node : document);
+  });
+
+  // 3) expose manual helper
+  window.Infodox = window.Infodox || {};
+  window.Infodox.runAll = function(rootSelector){
+    try{
+      const root = rootSelector ? document.querySelector(rootSelector) : document;
+      if(window.__TEXT_BEAUTY_V3_RUN__) window.__TEXT_BEAUTY_V3_RUN__(rootSelector);
+      if(window.__TEXT_BEAUTY_V3__) {
+        window.__TEXT_BEAUTY_V3__.processInline(root);
+        window.__TEXT_BEAUTY_V3__.processQuestions(root);
+        window.__TEXT_BEAUTY_V3__.beautifyFlow(root);
+        window.__TEXT_BEAUTY_V3__.enableCopyLists(root);
+        window.__TEXT_BEAUTY_V3__.renderRawHTML(root);
+      }
+      if(window.TrinityTTS) window.TrinityTTS.injectJokers(rootSelector || '#chat-container');
+      console.info('[Infodox.runAll] executed');
+    }catch(e){ console.warn(e); }
+  };
+
+  // 4) small UX hint
+  console.info('[INFODOX PATCH] Beauty.v3 + Trinity loaded. Use Infodox.runAll() to manually trigger.');
+})();
+</script>
+<!-- -------------------------
+   END OVERRIDE LOADER
+   ------------------------- -->
+
+<!-- ============================
+   FIM DO PATCH
+   ============================ -->
+
+  <script src="https://kodux78k.github.io/oiDual-0i/0RB-0S17.js"> </script>
+
+</body>
+</html>
