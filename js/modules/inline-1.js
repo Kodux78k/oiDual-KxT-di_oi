@@ -262,7 +262,8 @@ const App = {
 }, 1200);
 
 if (typeof particlesJS === 'function') {
-  particlesJS('particles-js', {
+  particlesJS
+     ('particles-js', {
     particles:{
       number:{ value:40 },
       color:{ value:['#0ff','#f0f'] },
