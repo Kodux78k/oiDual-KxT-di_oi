@@ -257,24 +257,10 @@ const App = {
         this.toggleField(false, true); 
         this.renderDeck();
         
-      setTimeout(() => {
-  this.announce("KOBLLUX V7.9 Visio. Memória Ativa.");
-}, 1200);
-
-if (typeof particlesJS === 'function') {
-  particlesJS
-     ('particles-js', {
-    particles:{
-      number:{ value:40 },
-      color:{ value:['#0ff','#f0f'] },
-      shape:{ type:'circle' },
-      opacity:{ value:0.4 },
-      size:{ value:2.4 },
-      move:{ enable:true, speed:1.5 }
+        setTimeout(() => this.announce("KOBLLUX V7.9 Visio. Memória Ativa."), 1200);
+        if(typeof particlesJS !== 'undefined') particlesJS('particles-js', {particles:{number:{value:30},color:{value:"#ffffff"},opacity:{value:0.5},size:{value:2},line_linked:{enable:true,distance:150,color:"#ffffff",opacity:0.2,width:1}}});
     },
-    retina_detect:true
-  });
-},
+
     // --- VOZ ---
     setupVoiceSystem() {
         if (!('webkitSpeechRecognition' in window)) return;
