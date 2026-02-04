@@ -23,6 +23,15 @@ const FusionOS = (() => {
     // Default apps (The Core Hub)
     const DEFAULT_APPS = [
         { id: 'DELTA', name: 'Delta Hub', desc: 'Interface de conexão externa.', url: 'https://kodux78k.github.io/DualInfodose-VirgemHuB/index.html', icon: 'globe', active: true, code: 'DELTA' }
+     {
+  id: 'VwRDI',
+  name: 'ViweR',
+  desc: 'Interface de visualização e leitura DI.',
+  url: 'https://kodux78k.github.io/oiDual-VwR-di/',
+  icon: 'globe',
+  active: true,
+  code: 'VWRDI'
+}
     ];
 
     let _state = {
@@ -701,6 +710,8 @@ window.FusionModule.init();`;
 'START': { name: 'starT', url: 'https://kodux78k.github.io/oiDual-starT/' },
 '78K':  { name: '78K ID HOME', url: 'https://kodux78k.github.io/oiDual-idHome/' },
 'NAV':  { name: 'NAV', url: 'https://kodux78k.github.io/oiDual-infodek/' },
+'VWRDI':  { name: 'VwR-di', url: 'https://kodux78k.github.io/oiDual-VwR-di/' },
+                
                 'RESET': 'RESET'
             };
 
