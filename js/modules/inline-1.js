@@ -260,13 +260,13 @@ const App = {
         setTimeout(() => this.announce("KOBLLUX V7.9 Visio. Memória Ativa."), 1200);
         if(typeof particlesJS !== 'undefined') particlesJS('particles-js', {
   particles: {
-    number: { value: 40 },
+    number: { value: 24 },
 
     color: { value: ['#0ff', '#f0f'] },
 
     shape: { type: 'circle' },
 
-    opacity: { value: 0.4 },
+    opacity: { value: 0.2 },
 
     size: { value: 2.4 },
 
