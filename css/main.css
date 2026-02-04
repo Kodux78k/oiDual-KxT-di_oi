@@ -39,7 +39,7 @@
     .sun-background { position: absolute; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #fffde7 0%, #fff176 40%, #ffb300 100%); filter: blur(60px); opacity: 0; transition: opacity 2s; animation: sun-orbit 60s linear infinite; }
     body.mode-day .sun-background { opacity: 0.5; }
     @keyframes sun-orbit { 0% { transform: translate(-20vw, 10vh); } 50% { transform: translate(80vw, -10vh); } 100% { transform: translate(-20vw, 10vh); } }
-    #particles-js { position: fixed; inset: 0; z-index: 12; opacity: 0.8; pointer-events: none; }
+    #particles-js { position: fixed; inset: 0; z-index: 97812; opacity: 0.8; pointer-events: none; }
     body.mode-day #particles-js { opacity: 0.1; }
     #bg-fake-custom { position: fixed; inset: 0; z-index: 2; opacity: 0.2; background-size: cover; background-position: center; pointer-events: none; }
 
