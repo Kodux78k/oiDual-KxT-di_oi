@@ -266,7 +266,7 @@ const App = {
 
     shape: { type: 'circle' },
 
-    opacity: { value: 0.2 },
+    opacity: { value: 0.7 },
 
     size: { value: 2.4 },
 
@@ -274,7 +274,7 @@ const App = {
       enable: true,
       distance: 150,
       color: '#ffffff',
-      opacity: 0.2,
+      opacity: 0.4,
       width: 1
     },
 
