@@ -159,6 +159,8 @@ body.field-closed .input-row {
       pointer-events: auto;
       transform: translateY(0);
     }
+body.field-closed .input-dock {   pointer-events: none; }  
+body.field-closed #field-toggle-handle {   pointer-events: auto; }
     /* Drawers */
     .drawer { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; display: flex; align-items: center; justify-content: center; }
     .drawer.open { opacity: 1; pointer-events: auto; }
