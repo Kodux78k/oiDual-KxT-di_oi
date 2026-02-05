@@ -40,7 +40,7 @@
     body.mode-day .sun-background { opacity: 0.5; }
     @keyframes sun-orbit { 0% { transform: translate(-20vw, 10vh); } 50% { transform: translate(80vw, -10vh); } 100% { transform: translate(-20vw, 10vh); } }
     #particles-js { position: fixed; inset: 0; z-index: 97812; opacity: 0.8; pointer-events: none; }
-    body.mode-day #particles-js { opacity: 0.1; }
+    body.mode-day #particles-js { opacity: 0.9; }
     #bg-fake-custom { position: fixed; inset: 0; z-index: 2; opacity: 0.2; background-size: cover; background-position: center; pointer-events: none; }
 
     /* Header Orb */
