@@ -133,7 +133,7 @@
     #field-toggle-handle { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem; opacity: 0.9; cursor: pointer; padding-bottom: 12px; text-transform: lowercase; letter-spacing: 1px; transition: 0.3s; }
     #field-toggle-handle:hover { color: var(--primary); transform: scale(1.02); }
     .footer-dot{ width:8px; height:8px; border-radius:50%; background:var(--secondary); animation:pulse 2s infinite; }
-    @keyframes pulse{50%{opacity:.4; box-shadow: 0 0 10px currentColor;}}
+    /* @keyframes pulse{50%{opacity:.4; box-shadow: 0 0 1px currentColor;}}*/
     .input-row { display: flex; width: 100%; gap: 10px; align-items: center; max-width: 800px; }
     .glass-input { flex: 1; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); color: inherit; padding: 14px 20px; border-radius: 99px; outline: none; transition: 0.3s; }
     .glass-input:focus { background: rgba(0,0,0,0.5); border-color: var(--primary); box-shadow: 0 0 15px rgba(0,245,255,0.2); }
