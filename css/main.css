@@ -122,8 +122,8 @@
     .tool-btn svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; }
 
     /* Input Dock */
-    .input-dock { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(to top, var(--bg-deep) 18%, transparent); z-index: 30; display: flex; flex-direction: column; align-items: center; }
-    body.mode-day .input-dock { background: linear-gradient(to top, rgba(0,0,0,0.4) 18%, transparent); }
+    .input-dock { position: fixed; bottom: 0; left: 0; right: 0; padding: 16px; background: linear-gradient(to top, var(--bg-deep) 8%, transparent); z-index: 30; display: flex; flex-direction: column; align-items: center; }
+    body.mode-day .input-dock { background: linear-gradient(to top, rgba(0,0,0,0.4) 8%, transparent); }
     #filePreview { display: none; width: 100%; max-width: 400px; background: rgba(0,0,0,0.8); border: 1px solid var(--primary); border-radius: 12px; padding: 10px; margin-bottom: 10px; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
     #filePreview.active { display: flex; animation: slideIn 0.3s; }
     .file-info { font-size: 0.8rem; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
