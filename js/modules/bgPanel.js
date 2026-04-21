@@ -37,7 +37,8 @@
     el.style.backgroundImage = dataUrl ? `url("${dataUrl}")` : '';
     // transição sutil
     el.style.transition = 'opacity 450ms ease, background-image 300ms ease';
-    el.style.opacity = dataUrl ? '0.25' : '0';
+    el.style.opacity = dataUrl ? '0.12' : '0';
+    el.style.filter = 'saturate(0.9) contrast(1.05)';
     // atualiza texto de status se existir
     const s = document.getElementById('bgStatusText');
     if (s) s.textContent = dataUrl ? 'Ativo' : 'Nenhum';
